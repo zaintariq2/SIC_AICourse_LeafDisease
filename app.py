@@ -2,7 +2,6 @@ import flask as fk
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers
-# import base64
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Activation, Dropout
 import matplotlib.pyplot as plt
@@ -12,18 +11,6 @@ from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
-# import pickle
-# Use pickle to load in the pre-trained model.
-# with open(f'model/trained_model.h5', 'rb') as f:
-#     model = pickle.load(f)
-# app = flask.Flask(__name__, template_folder='templates')
-# @app.route('/')
-# def main():
-#     return(flask.render_template('main.html'))
-# if __name__ == '__main__':
-#     app.run()
-
 
 app = fk.Flask(__name__, template_folder='templates')
 model = tf.keras.models.load_model("model/trained_model.h5")
@@ -62,15 +49,6 @@ class_names = ['Apple__Apple_scab', 'Apple_Black_rot', 'Apple__Cedar_apple_rust'
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXT
-
-# Function to load and prepare the image in right shape
-# def read_image(filename):
-#     img = fk.load_img(filename, target_size=(224, 224))
-#     x = fk.image.img_to_array(img)
-#     x = np.expand_dims(x, axis=0)
-#     x = fk.preprocess_input(x)
-#     return x
-
 
 def load_and_prep_image(filename, img_shape=256):
     """
@@ -118,14 +96,6 @@ def pred_and_plot():
             return fk.render_template('predict.html', prob=pred_class, user_image=file_path)
         else:
             return "Unable to read the file. Please check file extension"
-
-    # Plot the image and predicted class
-    # plt.imshow(img)
-    # plt.title(f"Prediction: {pred_class}")
-    # plt.axis(False)
-
-
-# pred_and_plot(model, "images/predictdidsease.jpg", class_names)
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False, port=8000)
